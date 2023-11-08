@@ -56,16 +56,33 @@ TEST(PasswordTest, empty_string)
 	int actual = my_password.count_leading_characters("");
 	ASSERT_EQ(0,actual);
 }
-TEST(PasswordTest, has_atleast_two)
+TEST(PasswordTest, has_mixed)
+{
+    Password my_password;
+	bool actual = my_password.has_mixed_case("Az");
+	ASSERT_EQ(true,actual);
+}
+TEST(PasswordTest, does_not_have_mix)
+{
+    Password my_password;
+	bool actual = my_password.has_mixed_case("AA");
+	ASSERT_EQ(false,actual);
+}
+TEST(PasswordTest, doesnt_have_two)
 {
     Password my_password;
 	bool actual = my_password.has_mixed_case("A");
 	ASSERT_EQ(false,actual);
 }
-
-TEST(PasswordTest, has_capital)
+TEST(PasswordTest, empty_string_mixed)
 {
     Password my_password;
-	bool actual = my_password.has_mixed_case("A");
-	ASSERT_EQ(true,actual);
+	bool actual = my_password.has_mixed_case("");
+	ASSERT_EQ(false,actual);
+}
+TEST(PasswordTest, huh)
+{
+    Password my_password;
+	bool actual = my_password.has_mixed_case(" T");
+	ASSERT_EQ(false,actual);
 }
