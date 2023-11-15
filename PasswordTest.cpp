@@ -56,16 +56,28 @@ TEST(PasswordTest, empty_string)
 	int actual = my_password.count_leading_characters("");
 	ASSERT_EQ(0,actual);
 }
-TEST(PasswordTest, has_mixed)
+TEST(PasswordTest, has_cap_first)
 {
     Password my_password;
 	bool actual = my_password.has_mixed_case("Az");
 	ASSERT_EQ(true,actual);
 }
-TEST(PasswordTest, does_not_have_mix)
+TEST(PasswordTest, has_cap_second)
+{
+    Password my_password;
+	bool actual = my_password.has_mixed_case("zA");
+	ASSERT_EQ(true,actual);
+}
+TEST(PasswordTest, does_not_have_lower_mix)
 {
     Password my_password;
 	bool actual = my_password.has_mixed_case("AA");
+	ASSERT_EQ(false,actual);
+}
+TEST(PasswordTest, does_not_have_upper_mix)
+{
+    Password my_password;
+	bool actual = my_password.has_mixed_case("aa");
 	ASSERT_EQ(false,actual);
 }
 TEST(PasswordTest, doesnt_have_two)
@@ -80,9 +92,60 @@ TEST(PasswordTest, empty_string_mixed)
 	bool actual = my_password.has_mixed_case("");
 	ASSERT_EQ(false,actual);
 }
-TEST(PasswordTest, huh)
+TEST(PasswordTest, space_in_pass)
 {
     Password my_password;
 	bool actual = my_password.has_mixed_case(" T");
+	ASSERT_EQ(false,actual);
+}
+TEST(PasswordTest, default_pass)
+{
+    Password my_password;
+	bool actual = my_password.authenticate("ChicoCA-95929");
+	ASSERT_EQ(true,actual);
+}
+TEST(PasswordTest, set_password)
+{
+    Password my_password;
+	my_password.set("PotatoChamp");
+	bool actual = my_password.authenticate("PotatoChamp");
+	ASSERT_EQ(true,actual);
+}
+TEST(PasswordTest, set_few_character)
+{
+    Password my_password;
+	my_password.set("Potato");
+	bool actual = my_password.authenticate("Potato");
+	ASSERT_EQ(false,actual);
+}
+TEST(PasswordTest, set_reoccuring_characters)
+{
+    Password my_password;
+	my_password.set("PPPPotato");
+	bool actual = my_password.authenticate("PPPPotato");
+	ASSERT_EQ(false,actual);
+}
+TEST(PasswordTest, set_no_mix_case)
+{
+    Password my_password;
+	my_password.set("potatomaster");
+	bool actual = my_password.authenticate("potatomaster");
+	ASSERT_EQ(false,actual);
+}
+TEST(PasswordTest, set_same_password)
+{
+    Password my_password;
+	my_password.set("PotatoChamp");
+	my_password.set("PotatoLoser");
+	my_password.set("PotatoChamp");
+	bool actual = my_password.authenticate("PotatoChamp");
+	ASSERT_EQ(false,actual);
+}
+
+TEST(PasswordTest, set_empty_password)
+{
+    Password my_password;
+	my_password.set("");
+	bool actual = my_password.authenticate("");
 	ASSERT_EQ(false,actual);
 }
